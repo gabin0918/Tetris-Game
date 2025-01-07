@@ -1,5 +1,7 @@
 package main;
 
+import mino.*;
+
 import java.awt.BasicStroke;
 import java.awt.Color;
 import java.awt.Font;
@@ -16,6 +18,13 @@ public class PlayManager {
     public static int top_y;
     public static int bottom_y;
 
+    // Mino
+    Mino currentMino;
+    final int MINO_START_X;
+    final int MINO_START_Y;
+
+    // Dodatkowe zmienne
+    public static int dropInterval = 60; // klocek opuszcza sie co 60 klatek, czyli co 1 sekunde
 
     public PlayManager(){
         // Ramka dla pola gry
@@ -23,10 +32,18 @@ public class PlayManager {
         right_x = left_x + WIDTH; // 460 + 360 = 820
         top_y = 50; 
         bottom_y = top_y + HEIGHT; //650
+
+        // Pozycja wejsciowa dla klocka - na srodku planszy
+        MINO_START_X = left_x + WIDTH/2 - Block.SIZE/2;
+        MINO_START_Y = top_y + Block.SIZE;
+
+        currentMino = new MinoL1();
+        currentMino.setXY(MINO_START_X, MINO_START_Y);
     }
 
     public void update(){
         //update
+        currentMino.update();
     }
 
     public void draw(Graphics2D g2){
@@ -44,7 +61,11 @@ public class PlayManager {
         g2.setFont(new Font("Comic Sans",Font.PLAIN,30));
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); //to robi wygladzanie krawedzi i wsm to nw czy jst potrzebne
         g2.drawString("Next",x+60,y+60);
-        
+
+        // Rysujemy obecny klocek
+        if(currentMino != null) {
+            currentMino.draw(g2);
+        }
     }
 
 }
