@@ -1,5 +1,6 @@
 package mino;
 
+import main.KeyHandler;
 import main.PlayManager;
 
 import java.awt.Color;
@@ -24,7 +25,35 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
     public abstract void setXY(int x, int y);
     public void updateXY(int direction){};
     public void update(){
-        autoDropCounter++; // zwiaksza sie kazda klatke (kazde rysowanie GamePanel)
+        // aktualizacja wspolrzednzch klocka po nacisnieciu przyciskow
+        if (KeyHandler.downPressed) {
+            b[0].y += Block.SIZE;
+            b[1].y += Block.SIZE;
+            b[2].y += Block.SIZE;
+            b[3].y += Block.SIZE;
+
+            KeyHandler.downPressed = false;
+            autoDropCounter = 0; // przy przesunieciu w dol zerowanie licznika
+        }
+        if (KeyHandler.leftPressed) {
+            b[0].x -= Block.SIZE;
+            b[1].x -= Block.SIZE;
+            b[2].x -= Block.SIZE;
+            b[3].x -= Block.SIZE;
+
+            KeyHandler.leftPressed = false;
+        }
+
+        if (KeyHandler.rightPressed) {
+            b[0].x += Block.SIZE;
+            b[1].x += Block.SIZE;
+            b[2].x += Block.SIZE;
+            b[3].x += Block.SIZE;
+
+            KeyHandler.rightPressed = false;
+        }
+        // automatyczne opadanie klockow
+        autoDropCounter++; // zwieksza sie kazda klatke (kazde rysowanie GamePanel)
         if(autoDropCounter == PlayManager.dropInterval){
             b[0].y += Block.SIZE;
             b[1].y += Block.SIZE;

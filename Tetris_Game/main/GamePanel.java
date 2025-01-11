@@ -18,6 +18,9 @@ public class GamePanel extends JPanel implements Runnable{ // klasa dziedziczy p
         this.setPreferredSize(new Dimension(WIDTH, HEIGHT));// ustawienie rozmiaru okna
         this.setBackground(Color.black);// ustawienie koloru tła
         this.setLayout(null); //żeby można było rysować na panelu
+        // Dodanie KeyListener
+        this.addKeyListener(new KeyHandler()); // dodanie obiektu, który obsłyży zdarzenie z klawiaturą
+        this.setFocusable(true); // abz GamePanel przechwytywał zdarzenia
 
         pm= new PlayManager(); // utworzenie pola gry
     }
