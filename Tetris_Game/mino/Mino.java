@@ -24,7 +24,7 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
     }
 
     public abstract void setXY(int x, int y);
-    // ustawienie zmiennej direction i nowego położenia klocka
+    // ustawienie zmiennej direction i nowego położenia klocka po wcisnieciu Up
     public void updateXY(int direction){
         this.direction = direction;
         b[0].x = tempB[0].x;
