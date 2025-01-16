@@ -5,6 +5,14 @@ import javax.swing.JFrame;
 public class Main {
  public static void main(String[] args) {
 
+  FileLogger logger = new FileLogger("application.log");
+
+  logger.log("Aplikacja została uruchomiona.");
+  logger.log("Wystąpił błąd podczas przetwarzania danych.");
+  logger.log("Aplikacja została zamknięta.");
+
+  System.out.println("Logi zostały zapisane.");
+
   JFrame window = new JFrame("Tetris");// Tytuł
   window.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE); // program kończy działanie po zamknięciu okna
   window.setResizable(false); // okno nie jest zmienialne
