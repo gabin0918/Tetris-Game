@@ -46,24 +46,24 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
         rightCollision = false;
         bottomCollision = false;
 
-        System.out.println("test");
-
-
         for (int i = 0; i < b.length; i++) {
             if(b[i].x + Block.SIZE == PlayManager.left_x) {
                 leftCollision = true;
+                System.out.println("test");
             }
         }
 
         for (int i = 0; i < b.length; i++) {
             if(b[i].x + Block.SIZE == PlayManager.right_x) {
                 rightCollision = true;
+                System.out.println("test");
             }
         }
 
         for (int i = 0; i < b.length; i++) {
             if(b[i].y + Block.SIZE == PlayManager.bottom_y) {
                 bottomCollision = true;
+                System.out.println("test");
             }
         }
     }

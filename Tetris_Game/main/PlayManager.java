@@ -11,7 +11,7 @@ import java.util.Random;
 
 public class PlayManager {
     //jeden blok będzie miał 30pikseli wiec mamy 12 na 20 bloków
-    final int WIDTH = 360; // szerokość pola gry
+    final int WIDTH = 390; // szerokość pola gry
     final int HEIGHT = 600; // wysokość pola gry
 
     public static int left_x;
@@ -29,8 +29,10 @@ public class PlayManager {
 
     public PlayManager(){
         // Ramka dla pola gry
-        left_x = (GamePanel.WIDTH/2)-(WIDTH/2); // 1280/2 - 360/2 = 460 
-        right_x = left_x + WIDTH; // 460 + 360 = 820
+        //left_x = (GamePanel.WIDTH/2) - (WIDTH/2); // 1280/2 - 360/2 = 460
+        //right_x = left_x + WIDTH; // 460 + 360 = 820
+        left_x = 460;
+        right_x = 850;
         top_y = 50; 
         bottom_y = top_y + HEIGHT; //650
 
@@ -69,7 +71,7 @@ public class PlayManager {
         // ta duza ramka
         g2.setColor(Color.white);
         g2.setStroke(new BasicStroke(4f)); // grubosc lini to bd 4pxl
-        g2.drawRect(left_x-4,top_y-4,WIDTH+8,HEIGHT+8); // współrzędne lewego gornego rogu no i wysokosc szerokosc
+        g2.drawRect(left_x-34,top_y-4,WIDTH+38,HEIGHT+8); // współrzędne lewego gornego rogu no i wysokosc szerokosc
                                                         // odejmuje 4 i dodaje 8 bo ramka ma szerokosc 4 pixeli
         
         // mniejsza ramka na wyswietlanie nastepnego elementu
