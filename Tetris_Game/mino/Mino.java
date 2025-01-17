@@ -11,6 +11,7 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
     public Block[] tempB = new Block[4]; // array na bloki,  przechowujace x i y po obracaniu klocka
     int autoDropCounter = 0;
     public int direction = 1; // są 4 możliwe ustawienia klocka (1,2,3,4)
+    boolean leftCollision, rightCollision, bottomCollision;
 
     public void create(Color c){ // inicjalizacja tablic
         b[0] = new Block(c);
@@ -35,11 +36,39 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
         b[2].y = tempB[2].y;
         b[3].x = tempB[3].x;
         b[3].y = tempB[3].y;
-    };
+    }
     public abstract void getDirection1(); // ustawia na polozenie 1
     public abstract void getDirection2(); // ustawia na polozenie 2
     public abstract void getDirection3(); // ustawia na polozenie 3
     public abstract void getDirection4(); // ustawia na polozenie 4
+    public void checkMovementCollision() {
+        leftCollision = false;
+        rightCollision = false;
+        bottomCollision = false;
+
+        System.out.println("test");
+
+
+        for (int i = 0; i < b.length; i++) {
+            if(b[i].x + Block.SIZE == PlayManager.left_x) {
+                leftCollision = true;
+            }
+        }
+
+        for (int i = 0; i < b.length; i++) {
+            if(b[i].x + Block.SIZE == PlayManager.right_x) {
+                rightCollision = true;
+            }
+        }
+
+        for (int i = 0; i < b.length; i++) {
+            if(b[i].y + Block.SIZE == PlayManager.bottom_y) {
+                bottomCollision = true;
+            }
+        }
+    }
+    public void checkRotationCollision() {};
+
     public void update(){
         // aktualizacja wspolrzednzch klocka po nacisnieciu przyciskow
         if(KeyHandler.upPressed){ // przekręcanie klocka
@@ -51,40 +80,50 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
             }
             KeyHandler.upPressed = false;
         }
-        if (KeyHandler.downPressed) {
-            b[0].y += Block.SIZE;
-            b[1].y += Block.SIZE;
-            b[2].y += Block.SIZE;
-            b[3].y += Block.SIZE;
 
+        checkMovementCollision();
+
+        if (KeyHandler.downPressed) {
+            if (bottomCollision == false) {
+                b[0].y += Block.SIZE;
+                b[1].y += Block.SIZE;
+                b[2].y += Block.SIZE;
+                b[3].y += Block.SIZE;
+
+                autoDropCounter = 0; // przy przesunieciu w dol zerowanie licznika
+            }
             KeyHandler.downPressed = false;
-            autoDropCounter = 0; // przy przesunieciu w dol zerowanie licznika
         }
         if (KeyHandler.leftPressed) {
-            b[0].x -= Block.SIZE;
-            b[1].x -= Block.SIZE;
-            b[2].x -= Block.SIZE;
-            b[3].x -= Block.SIZE;
-
+            if (leftCollision == false) {
+                b[0].x -= Block.SIZE;
+                b[1].x -= Block.SIZE;
+                b[2].x -= Block.SIZE;
+                b[3].x -= Block.SIZE;
+            }
             KeyHandler.leftPressed = false;
         }
 
         if (KeyHandler.rightPressed) {
-            b[0].x += Block.SIZE;
-            b[1].x += Block.SIZE;
-            b[2].x += Block.SIZE;
-            b[3].x += Block.SIZE;
+            if (rightCollision == false) {
+                b[0].x += Block.SIZE;
+                b[1].x += Block.SIZE;
+                b[2].x += Block.SIZE;
+                b[3].x += Block.SIZE;
+            }
 
             KeyHandler.rightPressed = false;
         }
         // automatyczne opadanie klockow
         autoDropCounter++; // zwieksza sie kazda klatke (kazde rysowanie GamePanel)
         if(autoDropCounter == PlayManager.dropInterval){
-            b[0].y += Block.SIZE;
-            b[1].y += Block.SIZE;
-            b[2].y += Block.SIZE;
-            b[3].y += Block.SIZE;
-            autoDropCounter = 0;
+            if (bottomCollision == false) {
+                b[0].y += Block.SIZE;
+                b[1].y += Block.SIZE;
+                b[2].y += Block.SIZE;
+                b[3].y += Block.SIZE;
+                autoDropCounter = 0;
+            }
         }
     }
     public void draw(Graphics2D g2) {

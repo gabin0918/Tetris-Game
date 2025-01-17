@@ -8,8 +8,6 @@ public class Main {
   FileLogger logger = new FileLogger("application.log");
 
   logger.log("Aplikacja została uruchomiona.");
-  logger.log("Wystąpił błąd podczas przetwarzania danych.");
-  logger.log("Aplikacja została zamknięta.");
 
   System.out.println("Logi zostały zapisane.");
 
@@ -25,5 +23,7 @@ public class Main {
   window.setVisible(true);// okno jest widoczne
 
   gp.lauchGame(); // wlaczamy Thread, aby puscic game loop
+
+  logger.log("Aplikacja została zamknięta.");
  }
 }
