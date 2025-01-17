@@ -7,7 +7,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 
 public class GamePanel extends JPanel implements Runnable{ // klasa dziedziczy po JPanel i implementuje interfejs Runnable
-    public static final int WIDTH =1280; // szerokość okna
+    public static final int WIDTH = 1280; // szerokość okna
     public static final int HEIGHT = 720; // wysokość okna
 
     final int FPS = 60; // ilość klatek na sekundę

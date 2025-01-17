@@ -27,15 +27,18 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
     public abstract void setXY(int x, int y);
     // ustawienie zmiennej direction i nowego położenia klocka po wcisnieciu Up
     public void updateXY(int direction){
-        this.direction = direction;
-        b[0].x = tempB[0].x;
-        b[0].y = tempB[0].y;
-        b[1].x = tempB[1].x;
-        b[1].y = tempB[1].y;
-        b[2].x = tempB[2].x;
-        b[2].y = tempB[2].y;
-        b[3].x = tempB[3].x;
-        b[3].y = tempB[3].y;
+
+        if(leftCollision == false && rightCollision == false && bottomCollision == false) {
+            this.direction = direction;
+            b[0].x = tempB[0].x;
+            b[0].y = tempB[0].y;
+            b[1].x = tempB[1].x;
+            b[1].y = tempB[1].y;
+            b[2].x = tempB[2].x;
+            b[2].y = tempB[2].y;
+            b[3].x = tempB[3].x;
+            b[3].y = tempB[3].y;
+        }
     }
     public abstract void getDirection1(); // ustawia na polozenie 1
     public abstract void getDirection2(); // ustawia na polozenie 2
@@ -47,7 +50,7 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
         bottomCollision = false;
 
         for (int i = 0; i < b.length; i++) {
-            if(b[i].x + Block.SIZE == PlayManager.left_x) {
+            if(b[i].x == PlayManager.left_x) {
                 leftCollision = true;
                 System.out.println("test");
             }
@@ -67,7 +70,32 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
             }
         }
     }
-    public void checkRotationCollision() {};
+    public void checkRotationCollision() {
+        leftCollision = false;
+        rightCollision = false;
+        bottomCollision = false;
+
+        for (int i = 0; i < b.length; i++) {
+            if(tempB[i].x < PlayManager.left_x) {
+                leftCollision = true;
+                System.out.println("test");
+            }
+        }
+
+        for (int i = 0; i < b.length; i++) {
+            if(tempB[i].x + Block.SIZE > PlayManager.right_x) {
+                rightCollision = true;
+                System.out.println("test");
+            }
+        }
+
+        for (int i = 0; i < b.length; i++) {
+            if(tempB[i].y + Block.SIZE > PlayManager.bottom_y) {
+                bottomCollision = true;
+                System.out.println("test");
+            }
+        }
+    };
 
     public void update(){
         // aktualizacja wspolrzednzch klocka po nacisnieciu przyciskow
@@ -130,8 +158,8 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
         int margin = 2;
         g2.setColor(b[0].color);
         g2.fillRect(b[0].x + margin, b[0].y + margin, Block.SIZE - 2*margin,  Block.SIZE - 2*margin);
-        g2.fillRect(b[1].x+ margin, b[1].y+ margin, Block.SIZE- 2*margin,  Block.SIZE- 2*margin);
-        g2.fillRect(b[2].x+ margin, b[2].y+ margin, Block.SIZE- 2*margin,  Block.SIZE- 2*margin);
-        g2.fillRect(b[3].x+ margin, b[3].y+ margin, Block.SIZE- 2*margin,  Block.SIZE- 2*margin);
+        g2.fillRect(b[1].x + margin, b[1].y + margin, Block.SIZE - 2*margin,  Block.SIZE-  2*margin);
+        g2.fillRect(b[2].x + margin, b[2].y + margin, Block.SIZE - 2*margin,  Block.SIZE-  2*margin);
+        g2.fillRect(b[3].x + margin, b[3].y + margin, Block.SIZE - 2*margin,  Block.SIZE-  2*margin);
     }
 }
