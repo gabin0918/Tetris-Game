@@ -12,6 +12,7 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
     int autoDropCounter = 0;
     public int direction = 1; // są 4 możliwe ustawienia klocka (1,2,3,4)
     boolean leftCollision, rightCollision, bottomCollision;
+    public boolean active = true;
 
     public void create(Color c){ // inicjalizacja tablic
         b[0] = new Block(c);
@@ -27,6 +28,8 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
     public abstract void setXY(int x, int y);
     // ustawienie zmiennej direction i nowego położenia klocka po wcisnieciu Up
     public void updateXY(int direction){
+
+        checkRotationCollision();
 
         if(leftCollision == false && rightCollision == false && bottomCollision == false) {
             this.direction = direction;
@@ -49,24 +52,26 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
         rightCollision = false;
         bottomCollision = false;
 
+        checkStaticBlockCollision();
+
         for (int i = 0; i < b.length; i++) {
             if(b[i].x == PlayManager.left_x) {
                 leftCollision = true;
-                System.out.println("test");
+
             }
         }
 
         for (int i = 0; i < b.length; i++) {
             if(b[i].x + Block.SIZE == PlayManager.right_x) {
                 rightCollision = true;
-                System.out.println("test");
+
             }
         }
 
         for (int i = 0; i < b.length; i++) {
             if(b[i].y + Block.SIZE == PlayManager.bottom_y) {
                 bottomCollision = true;
-                System.out.println("test");
+
             }
         }
     }
@@ -74,6 +79,8 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
         leftCollision = false;
         rightCollision = false;
         bottomCollision = false;
+
+        checkStaticBlockCollision();
 
         for (int i = 0; i < b.length; i++) {
             if(tempB[i].x < PlayManager.left_x) {
@@ -97,7 +104,33 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
         }
     };
 
+    private void checkStaticBlockCollision() {
+        for(int i = 0; i < PlayManager.staticBlocks.size(); i++){
+            int targetX = PlayManager.staticBlocks.get(i).x;
+            int targetY = PlayManager.staticBlocks.get(i).y;
+
+            for (int j = 0; j < b.length; j++) {
+                if(b[j].y + Block.SIZE == targetY && b[j].x == targetX) {
+                    bottomCollision = true;
+                }
+            }
+            for (int j = 0; j < b.length; j++) {
+                if(b[j].x - Block.SIZE == targetX && b[j].y == targetY) {
+                    leftCollision = true;
+                }
+            }
+            for (int j = 0; j < b.length; j++) {
+                if(b[j].x + Block.SIZE == targetX && b[j].y == targetY) {
+                    rightCollision = true;
+                }
+            }
+        }
+    }
+
     public void update(){
+
+        checkMovementCollision();
+
         // aktualizacja wspolrzednzch klocka po nacisnieciu przyciskow
         if(KeyHandler.upPressed){ // przekręcanie klocka
             switch(direction){
@@ -108,8 +141,6 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
             }
             KeyHandler.upPressed = false;
         }
-
-        checkMovementCollision();
 
         if (KeyHandler.downPressed) {
             if (bottomCollision == false) {
@@ -142,15 +173,21 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
 
             KeyHandler.rightPressed = false;
         }
+
+        if (bottomCollision) {
+            active = false;
+        }
+        else {
         // automatyczne opadanie klockow
-        autoDropCounter++; // zwieksza sie kazda klatke (kazde rysowanie GamePanel)
-        if(autoDropCounter == PlayManager.dropInterval){
-            if (bottomCollision == false) {
-                b[0].y += Block.SIZE;
-                b[1].y += Block.SIZE;
-                b[2].y += Block.SIZE;
-                b[3].y += Block.SIZE;
-                autoDropCounter = 0;
+            autoDropCounter++; // zwieksza sie kazda klatke (kazde rysowanie GamePanel)
+            if(autoDropCounter == PlayManager.dropInterval) {
+                if (bottomCollision == false) {
+                    b[0].y += Block.SIZE;
+                    b[1].y += Block.SIZE;
+                    b[2].y += Block.SIZE;
+                    b[3].y += Block.SIZE;
+                    autoDropCounter = 0;
+                }
             }
         }
     }
