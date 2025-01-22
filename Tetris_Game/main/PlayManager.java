@@ -85,9 +85,52 @@ public class PlayManager {
             nextMino = pickMino();
             nextMino.setXY(NEXT_MINO_X, NEXT_MINO_Y);
 
+            checkDelete(); // kiedy Mino staje sie nieaktywny, to sprawdzenie czy sa pelne linie klocek do usuniecia
         }
         else {
             currentMino.update();
+        }
+    }
+
+    private void checkDelete(){
+        // zmienne do poruszania sie po PlayManager
+        int x = left_x;
+        int y = top_y;
+        int blockCount = 0;
+
+        while(x < right_x && y < bottom_y){
+
+            for(int i = 0; i < staticBlocks.size(); i++){
+                if(staticBlocks.get(i).x == x && staticBlocks.get(i).y == y){
+                    blockCount++; // zwiekszanie licznika jesli w danym punkcie jest klocek
+                }
+            }
+
+            x += Block.SIZE;
+
+            if(x == right_x){ // jesli na koncu obecnej lininii
+
+                if(blockCount == 12){ // jesli prawda, to cala linia pelna klockow i mozna je usunac
+                    for(int i = staticBlocks.size() - 1; i > -1; i--){
+                        // usuwanie klocka, jesli jest w danej linii y
+                        if(staticBlocks.get(i).y == y){
+                            staticBlocks.remove(i);
+                        }
+                    }
+
+                    // linia klockow zostala usunieta, wiec klocki nad nia powinny zostac opuszczone
+                    for(int i = 0; i < staticBlocks.size(); i++){
+                        // jesli klocek jest nad obecnym y, to opuszczamy go o rozmiar klocka
+                        if(staticBlocks.get(i).y < y){
+                            staticBlocks.get(i).y += Block.SIZE;
+                        }
+                    }
+                }
+                // przejscie do linia nizej
+                blockCount = 0;
+                x = left_x;
+                y += Block.SIZE;
+            }
         }
     }
 
