@@ -13,6 +13,8 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
     public int direction = 1; // są 4 możliwe ustawienia klocka (1,2,3,4)
     boolean leftCollision, rightCollision, bottomCollision;
     public boolean active = true;
+    public boolean deactivating = false; // flaga, ze Mino dotarl do dolu, pozwoli zachowac aktywnosc jeszcze chwile
+    int deactivatingCounter = 0; // ile jeszcze Mino jest aktywny po kolizji dolem
 
     public void create(Color c){ // inicjalizacja tablic
         b[0] = new Block(c);
@@ -129,6 +131,11 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
 
     public void update(){
 
+        // sprawdzenie czy klocek osiagnal dolu - jesli tak, to zachowac jego aktywnosc na chwile, by mogl zrobic slide
+        if(deactivating){
+            deactivating();
+        }
+
         checkMovementCollision();
 
         // aktualizacja wspolrzednzch klocka po nacisnieciu przyciskow
@@ -175,7 +182,7 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
         }
 
         if (bottomCollision) {
-            active = false;
+            deactivating= true;
         }
         else {
         // automatyczne opadanie klockow
@@ -188,6 +195,18 @@ public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
                     b[3].y += Block.SIZE;
                     autoDropCounter = 0;
                 }
+            }
+        }
+    }
+    // opoznienie nieaktywnosci klocka, by mogl zrobic slide
+    public void deactivating(){
+        deactivatingCounter++;
+
+        if (deactivatingCounter == 45) { // po 45 narysowan panelu
+            deactivatingCounter = 0;
+            checkMovementCollision(); // sprawdzenie czy nadal pozostaje kolizja z dolem
+            if(bottomCollision){
+                active = false;
             }
         }
     }
