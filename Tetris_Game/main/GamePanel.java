@@ -5,6 +5,8 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
 import javax.swing.JPanel;
+import java.io.FileInputStream;
+import java.io.ObjectInputStream;
 
 public class GamePanel extends JPanel implements Runnable{ // klasa dziedziczy po JPanel i implementuje interfejs Runnable
     public static final int WIDTH = 1280; // szerokość okna
@@ -22,7 +24,19 @@ public class GamePanel extends JPanel implements Runnable{ // klasa dziedziczy p
         this.addKeyListener(new KeyHandler()); // dodanie obiektu, który obsłyży zdarzenie z klawiaturą
         this.setFocusable(true); // abz GamePanel przechwytywał zdarzenia
 
-        pm= new PlayManager(); // utworzenie pola gry
+        pm = new PlayManager();
+
+        try (FileInputStream fileIn = new FileInputStream("save.ser");
+             ObjectInputStream in = new ObjectInputStream(fileIn)) {
+
+            pm = (PlayManager) in.readObject();
+            pm.staticBlocks.clear();
+            pm.staticBlocks.addAll(pm.copyOfBlocks);
+            System.out.println("Odczytany obiekt");
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
     }
     public void lauchGame(){
         gameThread = new Thread(this); // utworzenie nowego wątku

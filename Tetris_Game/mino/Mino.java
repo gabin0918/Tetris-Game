@@ -5,8 +5,9 @@ import main.PlayManager;
 
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 
-public abstract class  Mino { // klasa bazowa dla wszystkich rodzajow klockow
+public abstract class  Mino implements Serializable { // klasa bazowa dla wszystkich rodzajow klockow
     public Block[] b = new Block[4]; // tablicy na bloki, przechowujace x i y wejsciowe
     public Block[] tempB = new Block[4]; // array na bloki,  przechowujace x i y po obracaniu klocka
     int autoDropCounter = 0;

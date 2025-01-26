@@ -1,8 +1,9 @@
 package mino;
 
 import java.awt.*;
+import java.io.Serializable;
 
-public class MinoBar extends Mino{
+public class MinoBar extends Mino implements Serializable {
     public MinoBar(){
         create(Color.cyan);
     }

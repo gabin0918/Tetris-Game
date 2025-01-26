@@ -3,8 +3,9 @@ package mino;
 import java.awt.Rectangle;
 import java.awt.Color;
 import java.awt.Graphics2D;
+import java.io.Serializable;
 
-public class Block extends Rectangle { // klasa dla pojedynczego bloka w klocku
+public class Block extends Rectangle implements Serializable { // klasa dla pojedynczego bloka w klocku
     public int x;
     public int y;
     public static final int SIZE=30; // 30x30px blok

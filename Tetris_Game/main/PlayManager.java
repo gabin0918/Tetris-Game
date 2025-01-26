@@ -7,10 +7,11 @@ import java.awt.Color;
 import java.awt.Font;
 import java.awt.Graphics2D;
 import java.awt.RenderingHints;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class PlayManager {
+public class PlayManager implements Serializable {
     //jeden blok będzie miał 30pikseli wiec mamy 12 na 20 bloków
     final int WIDTH = 360; // szerokość pola gry
     final int HEIGHT = 600; // wysokość pola gry
@@ -28,6 +29,7 @@ public class PlayManager {
     final int NEXT_MINO_X;
     final int NEXT_MINO_Y;
     public static ArrayList<Block> staticBlocks = new ArrayList<>();
+    public ArrayList<Block> copyOfBlocks = new ArrayList<>();
 
     // Dodatkowe zmienne
     public static int dropInterval = 60; // klocek opuszcza sie co 60 klatek, czyli co 1 sekunde
@@ -63,6 +65,7 @@ public class PlayManager {
         currentMino.setXY(MINO_START_X, MINO_START_Y);
         nextMino = pickMino();
         nextMino.setXY(NEXT_MINO_X, NEXT_MINO_Y);
+
     }
 
     private Mino pickMino() {
@@ -104,6 +107,7 @@ public class PlayManager {
             nextMino.setXY(NEXT_MINO_X, NEXT_MINO_Y);
 
             checkDelete(); // kiedy Mino staje sie nieaktywny, to sprawdzenie czy sa pelne linie klocek do usuniecia
+            copyOfBlocks = staticBlocks;
         }
         else {
             currentMino.update();
@@ -190,15 +194,15 @@ public class PlayManager {
         g2.drawRect(x, y, 200, 200);
         g2.setFont(new Font("Comic Sans",Font.PLAIN,30));
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); //to robi wygladzanie krawedzi i wsm to nw czy jst potrzebne
-        g2.drawString("Next",x+60,y+60);
+        g2.drawString("Nastepny",x+35,y+50);
 
         // Ramka ze score
         g2.drawRect(x, top_y, 250, 300);
         x +=40;
         y = top_y + 90;
-        g2.drawString("Level: " + level,x,y); y += 70;
-        g2.drawString("Lines: " + lines,x,y); y += 70;
-        g2.drawString("Score: " + score,x,y);
+        g2.drawString("Poziomy: " + level,x,y); y += 70;
+        g2.drawString("Linie: " + lines,x,y); y += 70;
+        g2.drawString("Wynik: " + score,x,y);
 
         // Rysowanie obecnego klocka
         if(currentMino != null) {
@@ -233,17 +237,17 @@ public class PlayManager {
         g2.setColor(Color.white);
         g2.setFont(g2.getFont().deriveFont(50f));
         if(gameOver){
-            x = left_x + 25;
+            x = left_x + 70;
             y = top_y + 320;
-            g2.drawString("GAME OVER", x, y);
+            g2.drawString("KONIEC", x, y);
         }
 
         // Rysowania nazwy gry
-        x = 55;
+        x = 45;
         y = top_y + 320;
         g2.setColor(Color.white);
         g2.setFont(new Font("Times New Roman", Font.ITALIC, 60));
-        g2.drawString("Simple Tetris", x, y);
+        g2.drawString("Projekt TETRIS", x, y);
     }
 
 }
