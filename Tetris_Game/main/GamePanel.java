@@ -73,6 +73,7 @@ public class GamePanel extends JPanel implements Runnable{ // klasa dziedziczy p
             if (KeyHandler.spacePressed) {
                 pm.staticBlocks.clear();
                 pm = new PlayManager();
+                KeyHandler.spacePressed = false;
             }
         }
 
