@@ -52,7 +52,9 @@ public class GamePanel extends JPanel implements Runnable{ // klasa dziedziczy p
         }
     }
     private void update(){
-        pm.update(); 
+        if(pm.gameOver == false){ // ciagle rysujemy zaktualizowany Panel dopoki nie Game Over
+            pm.update();
+        }
     }
     public void paintComponent(Graphics g){// rysowanie komponentów
         super.paintComponent(g); // rysowanie tła

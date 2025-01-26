@@ -31,6 +31,7 @@ public class PlayManager {
 
     // Dodatkowe zmienne
     public static int dropInterval = 60; // klocek opuszcza sie co 60 klatek, czyli co 1 sekunde
+    boolean gameOver = false;
 
     // Efekt na usuwanie klocek
     int effectCounter = 0;
@@ -83,6 +84,12 @@ public class PlayManager {
             staticBlocks.add(currentMino.b[1]);
             staticBlocks.add(currentMino.b[2]);
             staticBlocks.add(currentMino.b[3]);
+
+            // sprawdzenie czy koniec gry - klocek nie zmienil pozycji po pojaiwniue sie i nie mogl sie ruszyc,
+            // bo wystapila od razu kolizja
+            if(currentMino.b[0].x == MINO_START_X && currentMino.b[0].y == MINO_START_Y) {
+                gameOver = true;
+            }
 
             currentMino.deactivating = false; // reset flagi opoznienia deaktywacji klocka
 
@@ -188,6 +195,22 @@ public class PlayManager {
                 effectCounterOn = false;
             }
         }
+
+        // Komunikat GAME OVER
+        g2.setColor(Color.white);
+        g2.setFont(g2.getFont().deriveFont(50f));
+        if(gameOver){
+            x = left_x + 25;
+            y = top_y + 320;
+            g2.drawString("GAME OVER", x, y);
+        }
+
+        // Rysowania nazwy gry
+        x = 55;
+        y = top_y + 320;
+        g2.setColor(Color.white);
+        g2.setFont(new Font("Times New Roman", Font.ITALIC, 60));
+        g2.drawString("Simple Tetris", x, y);
     }
 
 }
