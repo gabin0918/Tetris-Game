@@ -28,8 +28,14 @@ public class PlayManager {
     final int NEXT_MINO_X;
     final int NEXT_MINO_Y;
     public static ArrayList<Block> staticBlocks = new ArrayList<>();
+
     // Dodatkowe zmienne
     public static int dropInterval = 60; // klocek opuszcza sie co 60 klatek, czyli co 1 sekunde
+
+    // Efekt na usuwanie klocek
+    int effectCounter = 0;
+    boolean effectCounterOn = false;
+    ArrayList<Integer> effectY = new ArrayList<>();
 
     public PlayManager(){
         // Ramka dla pola gry
@@ -111,6 +117,10 @@ public class PlayManager {
             if(x == right_x){ // jesli na koncu obecnej lininii
 
                 if(blockCount == 12){ // jesli prawda, to cala linia pelna klockow i mozna je usunac
+
+                    effectY.add(y); // dodanie rzedu klocek, ktory usuwamy i gdie bedzie efekt
+                    effectCounterOn = true;
+
                     for(int i = staticBlocks.size() - 1; i > -1; i--){
                         // usuwanie klocka, jesli jest w danej linii y
                         if(staticBlocks.get(i).y == y){
@@ -150,14 +160,33 @@ public class PlayManager {
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); //to robi wygladzanie krawedzi i wsm to nw czy jst potrzebne
         g2.drawString("Next",x+60,y+60);
 
-        // Rysujemy obecny klocek
+        // Rysowanie obecnego klocka
         if(currentMino != null) {
             currentMino.draw(g2);
         }
         nextMino.draw(g2);
 
+        // Rysowanie juz opadnietych klocek
         for(int i = 0 ; i < staticBlocks.size() ; i++){
             staticBlocks.get(i).draw(g2);
+        }
+
+        //Rysowanie effektu przy usuwaniu wypelnionego rzedu klocek
+        if(effectCounterOn){
+            effectCounter++;
+
+            // kazdy rzad przed usunieciem zrobi sie caly na czerwono
+            g2.setColor(Color.red);
+            for(int i = 0; i < effectY.size(); i++){
+                g2.fillRect(left_x, effectY.get(i), WIDTH, Block.SIZE);
+            }
+
+            // Stop rysowania efektu
+            if(effectCounter == 10){
+                effectY.clear();
+                effectCounter = 0;
+                effectCounterOn = false;
+            }
         }
     }
 
