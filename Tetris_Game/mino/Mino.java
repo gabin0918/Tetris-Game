@@ -1,5 +1,9 @@
 package mino;
 
+import interfaces.Collidable;
+import interfaces.Drawable;
+import interfaces.Rotatable;
+import interfaces.Updatable;
 import main.KeyHandler;
 import main.PlayManager;
 
@@ -7,7 +11,7 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.Serializable;
 
-public abstract class  Mino implements Serializable { // klasa bazowa dla wszystkich rodzajow klockow
+public abstract class  Mino implements Serializable, Drawable, Updatable, Rotatable, Collidable { // klasa bazowa dla wszystkich rodzajow klockow
     public Block[] b = new Block[4]; // tablicy na bloki, przechowujace x i y wejsciowe
     public Block[] tempB = new Block[4]; // array na bloki,  przechowujace x i y po obracaniu klocka
     int autoDropCounter = 0;
@@ -30,6 +34,8 @@ public abstract class  Mino implements Serializable { // klasa bazowa dla wszyst
 
     public abstract void setXY(int x, int y);
     // ustawienie zmiennej direction i nowego położenia klocka po wcisnieciu Up
+
+    @Override
     public void updateXY(int direction){
 
         checkRotationCollision();
@@ -46,10 +52,15 @@ public abstract class  Mino implements Serializable { // klasa bazowa dla wszyst
             b[3].y = tempB[3].y;
         }
     }
+    @Override
     public abstract void getDirection1(); // ustawia na polozenie 1
+    @Override
     public abstract void getDirection2(); // ustawia na polozenie 2
+    @Override
     public abstract void getDirection3(); // ustawia na polozenie 3
+    @Override
     public abstract void getDirection4(); // ustawia na polozenie 4
+    @Override
     public void checkMovementCollision() {
         leftCollision = false;
         rightCollision = false;
@@ -78,6 +89,7 @@ public abstract class  Mino implements Serializable { // klasa bazowa dla wszyst
             }
         }
     }
+    @Override
     public void checkRotationCollision() {
         leftCollision = false;
         rightCollision = false;
@@ -106,8 +118,8 @@ public abstract class  Mino implements Serializable { // klasa bazowa dla wszyst
             }
         }
     };
-
-    private void checkStaticBlockCollision() {
+    @Override
+    public void checkStaticBlockCollision() {
         for(int i = 0; i < PlayManager.staticBlocks.size(); i++){
             int targetX = PlayManager.staticBlocks.get(i).x;
             int targetY = PlayManager.staticBlocks.get(i).y;
@@ -130,6 +142,7 @@ public abstract class  Mino implements Serializable { // klasa bazowa dla wszyst
         }
     }
 
+    @Override
     public void update(){
 
         // sprawdzenie czy klocek osiagnal dolu - jesli tak, to zachowac jego aktywnosc na chwile, by mogl zrobic slide
@@ -211,6 +224,8 @@ public abstract class  Mino implements Serializable { // klasa bazowa dla wszyst
             }
         }
     }
+
+    @Override
     public void draw(Graphics2D g2) {
         int margin = 2;
         g2.setColor(b[0].color);

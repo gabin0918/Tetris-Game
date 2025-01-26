@@ -1,5 +1,7 @@
 package main;
 
+import interfaces.Drawable;
+import interfaces.Updatable;
 import mino.*;
 
 import java.awt.BasicStroke;
@@ -11,7 +13,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Random;
 
-public class PlayManager implements Serializable {
+public class PlayManager implements Serializable, Drawable, Updatable {
     //jeden blok będzie miał 30pikseli wiec mamy 12 na 20 bloków
     final int WIDTH = 360; // szerokość pola gry
     final int HEIGHT = 600; // wysokość pola gry
@@ -84,7 +86,7 @@ public class PlayManager implements Serializable {
         return mino;
     }
 
-
+    @Override
     public void update(){
         //update
         if (currentMino.active == false) {
@@ -180,6 +182,7 @@ public class PlayManager implements Serializable {
         }
     }
 
+    @Override
     public void draw(Graphics2D g2){
 
         // ta duza ramka
