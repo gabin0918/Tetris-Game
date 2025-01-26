@@ -38,6 +38,11 @@ public class PlayManager {
     boolean effectCounterOn = false;
     ArrayList<Integer> effectY = new ArrayList<>();
 
+    // Score & Levele
+    int level = 1;
+    int lines;
+    int score;
+
     public PlayManager(){
         // Ramka dla pola gry
         left_x = (GamePanel.WIDTH/2) - (WIDTH/2); // 1280/2 - 360/2 = 460
@@ -110,6 +115,7 @@ public class PlayManager {
         int x = left_x;
         int y = top_y;
         int blockCount = 0;
+        int lineCount = 0; // licznik usunietych linii na raz
 
         while(x < right_x && y < bottom_y){
 
@@ -135,6 +141,19 @@ public class PlayManager {
                         }
                     }
 
+                    lines++; // calkowita liczba usunietych linii za gre
+                    lineCount++; // liczba usunietych linii na raz
+
+                    // Przyspieszenie spadania kolckow co 10 usunietych linii i level-up,
+                    if(lines % 10 == 0 && dropInterval > 1){
+                        level++;
+                        if (dropInterval > 10) {
+                            dropInterval-=10;
+                        } else {
+                            dropInterval-=1;
+                        }
+                    }
+
                     // linia klockow zostala usunieta, wiec klocki nad nia powinny zostac opuszczone
                     for(int i = 0; i < staticBlocks.size(); i++){
                         // jesli klocek jest nad obecnym y, to opuszczamy go o rozmiar klocka
@@ -148,6 +167,12 @@ public class PlayManager {
                 x = left_x;
                 y += Block.SIZE;
             }
+        }
+
+        // jesli zostala usunieta linia klocek
+        if(lineCount > 0){
+            int singleLineScore = level * 10;
+            score += singleLineScore * lineCount;
         }
     }
 
@@ -166,6 +191,14 @@ public class PlayManager {
         g2.setFont(new Font("Comic Sans",Font.PLAIN,30));
         g2.setRenderingHint(RenderingHints.KEY_TEXT_ANTIALIASING, RenderingHints.VALUE_TEXT_ANTIALIAS_ON); //to robi wygladzanie krawedzi i wsm to nw czy jst potrzebne
         g2.drawString("Next",x+60,y+60);
+
+        // Ramka ze score
+        g2.drawRect(x, top_y, 250, 300);
+        x +=40;
+        y = top_y + 90;
+        g2.drawString("Level: " + level,x,y); y += 70;
+        g2.drawString("Lines: " + lines,x,y); y += 70;
+        g2.drawString("Score: " + score,x,y);
 
         // Rysowanie obecnego klocka
         if(currentMino != null) {
