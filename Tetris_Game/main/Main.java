@@ -25,7 +25,7 @@ public class Main {
    public void windowClosing(WindowEvent e) {
     logger.log("Aplikacja została zamknięta.");
 
-    try (FileOutputStream fileOut = new FileOutputStream("save.ser");
+    try (FileOutputStream fileOut = new FileOutputStream("save.bin");
          ObjectOutputStream out = new ObjectOutputStream(fileOut)) {
 
      out.writeObject(gp.pm);

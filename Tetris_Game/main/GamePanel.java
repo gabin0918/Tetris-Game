@@ -7,6 +7,7 @@ import java.awt.Graphics2D;
 import javax.swing.JPanel;
 import java.io.FileInputStream;
 import java.io.ObjectInputStream;
+import main.KeyHandler;
 
 public class GamePanel extends JPanel implements Runnable{ // klasa dziedziczy po JPanel i implementuje interfejs Runnable
     public static final int WIDTH = 1280; // szerokość okna
@@ -26,7 +27,7 @@ public class GamePanel extends JPanel implements Runnable{ // klasa dziedziczy p
 
         pm = new PlayManager();
 
-        try (FileInputStream fileIn = new FileInputStream("save.ser");
+        try (FileInputStream fileIn = new FileInputStream("save.bin");
              ObjectInputStream in = new ObjectInputStream(fileIn)) {
 
             pm = (PlayManager) in.readObject();
@@ -68,7 +69,13 @@ public class GamePanel extends JPanel implements Runnable{ // klasa dziedziczy p
     private void update(){
         if(pm.gameOver == false){ // ciagle rysujemy zaktualizowany Panel dopoki nie Game Over
             pm.update();
+        } else {
+            if (KeyHandler.spacePressed) {
+                pm.staticBlocks.clear();
+                pm = new PlayManager();
+            }
         }
+
     }
     public void paintComponent(Graphics g){// rysowanie komponentów
         super.paintComponent(g); // rysowanie tła
