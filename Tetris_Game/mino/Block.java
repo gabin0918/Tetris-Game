@@ -7,6 +7,14 @@ import java.awt.Color;
 import java.awt.Graphics2D;
 import java.io.Serializable;
 
+interface minoi {
+    void setXY(int x, int y);
+    void getDirection1();
+    void getDirection2();
+    void getDirection3();
+    void getDirection4();
+}
+
 public class Block extends Rectangle implements Serializable, Drawable { // klasa dla pojedynczego bloka w klocku
     public int x;
     public int y;
